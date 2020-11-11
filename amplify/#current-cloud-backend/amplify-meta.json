@@ -1,0 +1,128 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-newspaper-dev-211459-authRole",
+      "UnauthRoleArn": "arn:aws:iam::274940837738:role/amplify-newspaper-dev-211459-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::274940837738:role/amplify-newspaper-dev-211459-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-newspaper-dev-211459-deployment",
+      "UnauthRoleName": "amplify-newspaper-dev-211459-unauthRole",
+      "StackName": "amplify-newspaper-dev-211459",
+      "StackId": "arn:aws:cloudformation:us-east-2:274940837738:stack/amplify-newspaper-dev-211459/0227aa00-2303-11eb-8680-06c54738e514",
+      "AmplifyAppId": "d3j5gdb73l817h"
+    }
+  },
+  "auth": {
+    "newspaper62319ab7": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "lastPushTimeStamp": "2020-11-10T03:50:12.724Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-newspaper-dev-211459-deployment/amplify-cfn-templates/auth/newspaper62319ab7-cloudformation-template.yml",
+        "logicalId": "authnewspaper62319ab7"
+      },
+      "output": {
+        "AppClientSecret": "mlg8fhq3a6jdgb3nrpipvdd537u9c589q38mrtgictf9hn3v1kl",
+        "UserPoolId": "us-east-2_4jvpD5R8A",
+        "AppClientIDWeb": "700o8n1977q3vbo79c1dmv60h0",
+        "AppClientID": "2r1dnl27veia411l1fusdo4ha8",
+        "IdentityPoolId": "us-east-2:d0d54a5c-0384-407d-823f-27c59ec7fb3f",
+        "IdentityPoolName": "newspaper62319ab7_identitypool_62319ab7__dev",
+        "UserPoolName": "newspaper62319ab7_userpool_62319ab7"
+      },
+      "lastPushDirHash": "AAB/Tcu5aNh+H3h02CTwVvVl1+E="
+    },
+    "userPoolGroups": {
+      "service": "Cognito-UserPool-Groups",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "newspaper62319ab7",
+          "attributes": [
+            "UserPoolId",
+            "AppClientIDWeb",
+            "AppClientID",
+            "IdentityPoolId"
+          ]
+        }
+      ],
+      "lastPushTimeStamp": "2020-11-10T03:50:12.724Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-newspaper-dev-211459-deployment/amplify-cfn-templates/auth/template.json",
+        "logicalId": "authuserPoolGroups"
+      },
+      "output": {
+        "adminGroupRole": "arn:aws:iam::274940837738:role/us-east-2_4jvpD5R8A-adminGroupRole",
+        "editoresGroupRole": "arn:aws:iam::274940837738:role/us-east-2_4jvpD5R8A-editoresGroupRole"
+      },
+      "lastPushDirHash": "GCgKMPauJo7syYBqM3yyr1FXXqA="
+    }
+  },
+  "function": {
+    "AdminQueries4a2510a4": {
+      "service": "Lambda",
+      "providerPlugin": "awscloudformation",
+      "build": true,
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "newspaper62319ab7",
+          "attributes": [
+            "UserPoolId"
+          ]
+        }
+      ],
+      "lastBuildTimeStamp": "2020-11-10T03:44:49.870Z",
+      "lastPackageTimeStamp": "2020-11-10T03:44:53.380Z",
+      "distZipFilename": "AdminQueries4a2510a4-5a725a55514675363042-build.zip",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-newspaper-dev-211459-deployment/amplify-cfn-templates/function/AdminQueries4a2510a4-cloudformation-template.json",
+        "logicalId": "functionAdminQueries4a2510a4"
+      },
+      "lastPushTimeStamp": "2020-11-10T03:50:12.724Z",
+      "output": {
+        "Region": "us-east-2",
+        "Arn": "arn:aws:lambda:us-east-2:274940837738:function:AdminQueries4a2510a4-dev",
+        "Name": "AdminQueries4a2510a4-dev",
+        "LambdaExecutionRole": "AdminQueries4a2510a4LambdaRole-dev"
+      },
+      "lastPushDirHash": "e+XXPbC76C2yeDhcfhzkE5yQLNU="
+    }
+  },
+  "api": {
+    "AdminQueries": {
+      "service": "API Gateway",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "newspaper62319ab7",
+          "attributes": [
+            "UserPoolId"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "AdminQueries4a2510a4",
+          "attributes": [
+            "Arn",
+            "Name"
+          ]
+        }
+      ],
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-newspaper-dev-211459-deployment/amplify-cfn-templates/api/admin-queries-cloudformation-template.json",
+        "logicalId": "apiAdminQueries"
+      },
+      "lastPushTimeStamp": "2020-11-10T03:50:12.724Z",
+      "output": {
+        "ApiName": "AdminQueries",
+        "RootUrl": "https://cazw14vs00.execute-api.us-east-2.amazonaws.com/dev"
+      },
+      "lastPushDirHash": "0LINyd7qSGC/qc3E1bsEGrwsmkY="
+    }
+  }
+}
