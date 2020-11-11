@@ -34,7 +34,7 @@ export default {
       try {
         await Auth.signOut({ global: true });
         this.$store.commit("changeLoggedStatus", false);
-        // this.$router.push("/");
+        this.$router.push("/");
       } catch (error) {
         console.log("error signing out: ", error);
       }
@@ -49,7 +49,7 @@ export default {
     },
   },
 
-  mounted() {
+  updated() {
     this.checkStatus();
   },
 };
