@@ -50,17 +50,7 @@ export default {
       }
     },
     test: async function() {
-      try {
-        await Auth.signUp({
-          username: "jaime",
-          password: "jaime123",
-          attributes: {
-            email: "jaime@dodo.com"
-          }
-        });
-      } catch (error) {
-        console.log("Error signing up: ", error);
-      }
+     
     },
   },
 };
