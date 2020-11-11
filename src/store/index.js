@@ -4,8 +4,17 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {},
-  mutations: {},
+  state: {
+    isLogged: false,
+  },
+  mutations: {
+    changeLoggedStatus(state, newStatus) {
+      state.isLogged = newStatus;
+    },
+  },
+  getters: {
+    loggedStatus: (state) => state.isLogged,
+  },
   actions: {},
-  modules: {}
+  modules: {},
 });

@@ -1,14 +1,14 @@
 <template>
-  <div class="home">
-    <h1>home</h1>
-  </div>
+<v-app>
+  <Login/>
+</v-app>
 </template>
 
 <script>
 // @ is an alias to /src
-
+import Login from "@/components/Login";
 export default {
   name: "Home",
-  components: {},
+  components: { Login },
 };
 </script>
