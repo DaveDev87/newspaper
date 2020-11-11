@@ -50,7 +50,17 @@ export default {
       }
     },
     test: async function() {
-      this.$router.push("/admin");
+      try {
+        await Auth.signUp({
+          username: "jaime",
+          password: "jaime123",
+          attributes: {
+            email: "jaime@dodo.com"
+          }
+        });
+      } catch (error) {
+        console.log("Error signing up: ", error);
+      }
     },
   },
 };
