@@ -50,7 +50,12 @@ export default {
       }
     },
     test: async function() {
-     
+     try {
+       let user = await Auth.currentAuthenticatedUser();
+       console.log(user)
+     } catch (error) {
+       console.log(error)
+     }
     },
   },
 };

@@ -1,5 +1,7 @@
 <template>
-  <h1>Admin</h1>
+  <v-app>
+    <h1>Admin</h1>
+  </v-app>
 </template>
 
 <script>
