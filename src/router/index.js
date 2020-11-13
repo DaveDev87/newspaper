@@ -3,6 +3,9 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Admin from "../views/Admin.vue";
 import Editor from "../views/Editor.vue";
+import CreateNew from "../views/CreateNew.vue";
+import ModifyNews from "../views/ModifyNews.vue"
+
 
 Vue.use(VueRouter);
 
@@ -21,6 +24,16 @@ const routes = [
     path: "/editor",
     name: "editor",
     component: Editor,
+  },
+  {
+    path: "/CreateNew",
+    name: "CreateNew",
+    component: CreateNew,
+  },
+  {
+    path: "/ModifyNews",
+    name: "ModifyNews",
+    component: ModifyNews,
   },
   // {
   //   path: "/about",
