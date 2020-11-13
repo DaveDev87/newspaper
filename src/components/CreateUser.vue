@@ -37,7 +37,7 @@
               </v-col>
               <v-col cols="12" sm="6">
                 <v-select
-                  :items="['admin', 'editor']"
+                  :items="['admin', 'editores']"
                   label="Rol*"
                   v-model="rol"
                   required
@@ -91,21 +91,6 @@ export default {
   }),
   methods: {
     createUser: async function() {
-      try {
-        await Auth.signUp({
-          username: this.username,
-          password: this.password,
-          attributes: {
-            email: this.email,
-          },
-        });
-        await this.TestAPI();
-      } catch (error) {
-        console.error("Error signing up: ", error);
-      }
-    },
-
-    TestAPI: async function() {
       let apiName = "AdminQueries";
       let path = "/addUserToGroup";
       let myInit = {
@@ -120,8 +105,23 @@ export default {
             .getJwtToken()}`,
         },
       };
-      return await API.post(apiName, path, myInit);
+      try {
+        await Auth.signUp({
+          username: this.username,
+          password: this.password,
+          attributes: {
+            email: this.email,
+          },
+        });
+        await API.post(apiName, path, myInit);
+      } catch (error) {
+        console.error("Error signing up: ", error);
+      }
     },
+
+    // TestAPI: async function() {
+    //   return await API.post(apiName, path, myInit);
+    // },
     cleanDialog: function() {
       this.username = "";
       this.email = "";
