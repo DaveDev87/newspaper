@@ -5,11 +5,9 @@
         <v-row>
           <create-user />
         </v-row>
+
         <v-row>
-          <v-divider></v-divider>
-        </v-row>
-        <v-row>
-          Users
+          <datatable-users />
         </v-row>
       </v-col>
     </v-container>
@@ -18,9 +16,11 @@
 
 <script>
 import CreateUser from "../components/CreateUser.vue";
+import DatatableUsers from "../components/DatatableUsers.vue";
 export default {
   components: {
     CreateUser,
+    DatatableUsers,
   },
 };
 </script>
