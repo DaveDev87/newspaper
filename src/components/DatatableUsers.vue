@@ -14,42 +14,63 @@
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px">
           <v-card>
-            <v-card-title>
-              <span class="headline">{{ formTitle }}</span>
-            </v-card-title>
+            <!-- <v-card-title>
+              <span class="headline">Usuario: {{ editedItem.Username }}</span>
+            </v-card-title> -->
 
             <v-card-text>
               <v-container>
                 <v-row>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.Username"
-                      label="Usuario"
-                    ></v-text-field>
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title>Nombre de usuario</v-list-item-title>
+                        <v-list-item-subtitle>{{
+                          editedItem["Username"]
+                        }}</v-list-item-subtitle>
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title
+                          >Correo electronico</v-list-item-title
+                        >
+                        <v-list-item-subtitle>{{
+                          editedItem["email"]
+                        }}</v-list-item-subtitle>
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title
+                          >Estado de la cuenta</v-list-item-title
+                        >
+                        <v-list-item-subtitle>{{
+                          editedItem["Enabled"]
+                        }}</v-list-item-subtitle>
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title>Creado</v-list-item-title>
+                        <v-list-item-subtitle>{{
+                          editedItem["UserCreateDate"]
+                        }}</v-list-item-subtitle>
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title>Confirmación</v-list-item-title>
+                        <v-list-item-subtitle>{{
+                          editedItem["UserStatus"]
+                        }}</v-list-item-subtitle>
+                      </v-list-item-content>
+                    </v-list-item>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.calories"
-                      label="Calories"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.fat"
-                      label="Fat (g)"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.carbs"
-                      label="Carbs (g)"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.protein"
-                      label="Protein (g)"
-                    ></v-text-field>
+                  <v-col>
+                    <v-switch inset v-model="editedItem.Enabled" label="Habilitar/Desabilitar Usuario">
+
+                    </v-switch>
                   </v-col>
                 </v-row>
               </v-container>
@@ -93,11 +114,6 @@
         mdi-delete
       </v-icon>
     </template>
-    <template v-slot:no-data>
-      <v-btn color="primary">
-        Reset
-      </v-btn>
-    </template>
   </v-data-table>
 </template>
 
@@ -126,9 +142,10 @@ export default {
     editedIndex: -1,
     editedItem: {
       username: "",
-      rol: "",
+      Enabled: "",
       email: "",
-      state: "",
+      UserStatus: "",
+      UserCreateDate: "",
     },
     defaultItem: {
       name: "",
@@ -187,8 +204,9 @@ export default {
     },
 
     editItem(item) {
-      this.editedIndex = this.userlist.indexOf(item);
-      this.editedItem = Object.assign({}, item);
+      this.editedItem = item;
+      // this.editedIndex = this.userlist.indexOf(item);
+      // this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
 
@@ -220,12 +238,12 @@ export default {
     },
 
     save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.userlist[this.editedIndex], this.editedItem);
-      } else {
-        this.userlist.push(this.editedItem);
-      }
-      this.close();
+      // if (this.editedIndex > -1) {
+      //   Object.assign(this.userlist[this.editedIndex], this.editedItem);
+      // } else {
+      //   this.userlist.push(this.editedItem);
+      // }
+      // this.close();
     },
   },
 };
