@@ -64,12 +64,22 @@
                     </v-list-item>
                   </v-col>
                   <v-col>
-                    <v-switch
-                      inset
-                      v-model="editedItem.Enabled"
-                      label="Habilitar/Desabilitar Usuario"
+                    <v-btn
+                      v-if="!editedItem.Enabled"
+                      v-on:click="enableUser(editedItem.Username)"
+                      outlined
+                      color="green"
                     >
-                    </v-switch>
+                      Habilitar
+                    </v-btn>
+                    <v-btn
+                      v-else-if="editedItem.Enabled"
+                      v-on:click="disableUser(editedItem.Username)"
+                      outlined
+                      color="blue"
+                    >
+                      Deshabilitar
+                    </v-btn>
                   </v-col>
                 </v-row>
               </v-container>
@@ -78,10 +88,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="close">
-                Cancel
-              </v-btn>
-              <v-btn color="blue darken-1" text @click="save">
-                Save
+                close
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -159,11 +166,7 @@ export default {
     },
   }),
 
-  computed: {
-    formTitle() {
-      return this.editedIndex === -1 ? "New Item" : "Edit Item";
-    },
-  },
+  computed: {},
 
   watch: {
     dialog(val) {
@@ -206,6 +209,50 @@ export default {
         console.error("Error fetching users: ", error);
       }
     },
+
+    async enableUser(name) {
+      let apiName = "AdminQueries";
+      let path = "/enableUser";
+      let myInit = {
+        body: {
+          username: name,
+        },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${(await Auth.currentSession())
+            .getAccessToken()
+            .getJwtToken()}`,
+        },
+      };
+      try {
+        await API.post(apiName, path, myInit);
+        this.fetchUsers();
+      } catch (error) {
+        console.error("Error fetching users: ", error);
+      }
+    },
+    async disableUser(name) {
+      let apiName = "AdminQueries";
+      let path = "/disableUser";
+      let myInit = {
+        body: {
+          username: name,
+        },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${(await Auth.currentSession())
+            .getAccessToken()
+            .getJwtToken()}`,
+        },
+      };
+      try {
+        await API.post(apiName, path, myInit);
+        this.fetchUsers();
+      } catch (error) {
+        console.error("Error fetching users: ", error);
+      }
+    },
+
     getColor(item) {
       if (item === true) return "green";
       else if (item === false) return "blue";
@@ -213,8 +260,6 @@ export default {
 
     editItem(item) {
       this.editedItem = item;
-      // this.editedIndex = this.userlist.indexOf(item);
-      // this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
 
