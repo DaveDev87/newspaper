@@ -14,10 +14,6 @@
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px">
           <v-card>
-            <!-- <v-card-title>
-              <span class="headline">Usuario: {{ editedItem.Username }}</span>
-            </v-card-title> -->
-
             <v-card-text>
               <v-container>
                 <v-row>
@@ -68,8 +64,11 @@
                     </v-list-item>
                   </v-col>
                   <v-col>
-                    <v-switch inset v-model="editedItem.Enabled" label="Habilitar/Desabilitar Usuario">
-
+                    <v-switch
+                      inset
+                      v-model="editedItem.Enabled"
+                      label="Habilitar/Desabilitar Usuario"
+                    >
                     </v-switch>
                   </v-col>
                 </v-row>
@@ -113,6 +112,11 @@
       <v-icon small @click="deleteItem(item)">
         mdi-delete
       </v-icon>
+    </template>
+    <template v-slot:item.Enabled="{ item }">
+      <v-chip label :color="getColor(item.Enabled)" dark>
+        {{ item.Enabled }}
+      </v-chip>
     </template>
   </v-data-table>
 </template>
@@ -201,6 +205,10 @@ export default {
       } catch (error) {
         console.error("Error fetching users: ", error);
       }
+    },
+    getColor(item) {
+      if (item === true) return "green";
+      else if (item === false) return "blue";
     },
 
     editItem(item) {
