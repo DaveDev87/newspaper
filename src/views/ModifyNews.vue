@@ -2,26 +2,28 @@
     <div class="modifynews">
         <h1>Tus Noticias</h1>
         <v-divider></v-divider>
-        <v-card flat class="pa-3" v-for="item in items" :key="item.id">
+        <v-card flat class="pa-3" v-for="todo in todos" :key="todo.newID">
             <v-layout row wrap>
                 <v-flex xs12 md5>
                     <div class="caption grey--text">Titulo</div>
-                    <div>Nuevo Titulo</div>
+                    <div>{{todo.news_title}}</div>
                 </v-flex>
                 <v-flex xs6 sm4 md2>
                     <div class="caption grey--text">Autor</div>
-                    <div>Nuevo Titulo</div>
+                    <div>{{todo.news_author}}</div>
                 </v-flex>
                 <v-flex xs6 sm4 md2>
                     <div class="caption grey--text">Fecha</div>
-                    <div>Nuevo Titulo</div>
+                    <div>{{todo.news_date}}</div>
                 </v-flex>
                 <v-flex xs6 sm4 md2>
                   <v-row
                     align="center"
                     justify="space-around">
 
-                   <Popup/>
+                   <Popup
+                   v-bind:key="todo.newID" 
+                   />
                     <v-btn
                     depressed
                     color="error">
@@ -81,6 +83,9 @@
 
 <script>
 import Popup from '../components/Popup.vue'
+import axios from 'axios'
+
+
 export default {
   components: { Popup },
     data () {
@@ -89,7 +94,25 @@ export default {
           { title: 'Crear Noticia', icon: 'mdi-file-plus', route: '/CreateNew' },
           { title: 'Modificar Noticias', icon: 'mdi-file-edit', route: '/ModifyNews' },
         ],
+        todos: []
+        
 
+      }
+    },
+    mounted() {
+      this.getTodos();
+      
+    },
+    methods: {
+      getTodos(){
+        axios.get('https://0zvnue8cok.execute-api.us-east-2.amazonaws.com/default/all_noticias',
+                  { 'headers': { 'x-api-key': 'IlFzPiYcXm7SauQWkhZWk3VuI4d89oP34c9W7Bun' }}
+                ).then(
+          response => {
+            console.log(response)
+            this.todos= response.data.Items
+          })
+          .catch(e=> console.log(e))
       }
     },
   }
