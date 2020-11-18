@@ -9,47 +9,77 @@
   >
     <template v-slot:top>
       <v-toolbar flat>
-        <v-toolbar-title>Editores</v-toolbar-title>
+        <v-toolbar-title>Usuarios</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px">
           <v-card>
-            <v-card-title>
-              <span class="headline">{{ formTitle }}</span>
-            </v-card-title>
-
             <v-card-text>
               <v-container>
                 <v-row>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.Username"
-                      label="Usuario"
-                    ></v-text-field>
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title>Nombre de usuario</v-list-item-title>
+                        <v-list-item-subtitle>{{
+                          editedItem["Username"]
+                        }}</v-list-item-subtitle>
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title
+                          >Correo electronico</v-list-item-title
+                        >
+                        <v-list-item-subtitle>{{
+                          editedItem["email"]
+                        }}</v-list-item-subtitle>
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title
+                          >Estado de la cuenta</v-list-item-title
+                        >
+                        <v-list-item-subtitle>{{
+                          editedItem["Enabled"]
+                        }}</v-list-item-subtitle>
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title>Creado</v-list-item-title>
+                        <v-list-item-subtitle>{{
+                          editedItem["UserCreateDate"]
+                        }}</v-list-item-subtitle>
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title>Confirmación</v-list-item-title>
+                        <v-list-item-subtitle>{{
+                          editedItem["UserStatus"]
+                        }}</v-list-item-subtitle>
+                      </v-list-item-content>
+                    </v-list-item>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.calories"
-                      label="Calories"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.fat"
-                      label="Fat (g)"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.carbs"
-                      label="Carbs (g)"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.protein"
-                      label="Protein (g)"
-                    ></v-text-field>
+                  <v-col>
+                    <v-btn
+                      v-if="!editedItem.Enabled"
+                      v-on:click="enableUser(editedItem.Username)"
+                      outlined
+                      color="green"
+                    >
+                      Habilitar
+                    </v-btn>
+                    <v-btn
+                      v-else-if="editedItem.Enabled"
+                      v-on:click="disableUser(editedItem.Username)"
+                      outlined
+                      color="blue"
+                    >
+                      Deshabilitar
+                    </v-btn>
                   </v-col>
                 </v-row>
               </v-container>
@@ -58,10 +88,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="close">
-                Cancel
-              </v-btn>
-              <v-btn color="blue darken-1" text @click="save">
-                Save
+                close
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -90,13 +117,13 @@
         mdi-pencil
       </v-icon>
       <v-icon small @click="deleteItem(item)">
-        mdi-delete
+        mdi-newspaper
       </v-icon>
     </template>
-    <template v-slot:no-data>
-      <v-btn color="primary">
-        Reset
-      </v-btn>
+    <template v-slot:item.Enabled="{ item }">
+      <v-chip label :color="getColor(item.Enabled)" dark>
+        {{ item.Enabled }}
+      </v-chip>
     </template>
   </v-data-table>
 </template>
@@ -126,9 +153,10 @@ export default {
     editedIndex: -1,
     editedItem: {
       username: "",
-      rol: "",
+      Enabled: "",
       email: "",
-      state: "",
+      UserStatus: "",
+      UserCreateDate: "",
     },
     defaultItem: {
       name: "",
@@ -138,11 +166,7 @@ export default {
     },
   }),
 
-  computed: {
-    formTitle() {
-      return this.editedIndex === -1 ? "New Item" : "Edit Item";
-    },
-  },
+  computed: {},
 
   watch: {
     dialog(val) {
@@ -189,9 +213,56 @@ export default {
       }
     },
 
+    async enableUser(name) {
+      let apiName = "AdminQueries";
+      let path = "/enableUser";
+      let myInit = {
+        body: {
+          username: name,
+        },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${(await Auth.currentSession())
+            .getAccessToken()
+            .getJwtToken()}`,
+        },
+      };
+      try {
+        await API.post(apiName, path, myInit);
+        this.fetchUsers();
+      } catch (error) {
+        console.error("Error fetching users: ", error);
+      }
+    },
+    async disableUser(name) {
+      let apiName = "AdminQueries";
+      let path = "/disableUser";
+      let myInit = {
+        body: {
+          username: name,
+        },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${(await Auth.currentSession())
+            .getAccessToken()
+            .getJwtToken()}`,
+        },
+      };
+      try {
+        await API.post(apiName, path, myInit);
+        this.fetchUsers();
+      } catch (error) {
+        console.error("Error fetching users: ", error);
+      }
+    },
+
+    getColor(item) {
+      if (item === true) return "green";
+      else if (item === false) return "blue";
+    },
+
     editItem(item) {
-      this.editedIndex = this.userlist.indexOf(item);
-      this.editedItem = Object.assign({}, item);
+      this.editedItem = item;
       this.dialog = true;
     },
 
@@ -223,11 +294,6 @@ export default {
     },
 
     save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.userlist[this.editedIndex], this.editedItem);
-      } else {
-        this.userlist.push(this.editedItem);
-      }
       this.close();
     },
   },

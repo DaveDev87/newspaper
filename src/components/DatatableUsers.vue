@@ -291,12 +291,7 @@ export default {
     },
 
     save() {
-      // if (this.editedIndex > -1) {
-      //   Object.assign(this.userlist[this.editedIndex], this.editedItem);
-      // } else {
-      //   this.userlist.push(this.editedItem);
-      // }
-      // this.close();
+      this.close();
     },
   },
 };
