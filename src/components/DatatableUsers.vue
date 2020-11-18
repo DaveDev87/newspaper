@@ -117,7 +117,7 @@
         mdi-pencil
       </v-icon>
       <v-icon small @click="deleteItem(item)">
-        mdi-delete
+        mdi-newspaper
       </v-icon>
     </template>
     <template v-slot:item.Enabled="{ item }">
