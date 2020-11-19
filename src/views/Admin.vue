@@ -1,12 +1,13 @@
 <template>
   <v-app>
-    <v-container>
-      <v-col>
-        <v-row>
+    <v-container fluid>
+      <v-row>
+        <v-col>
           <create-user />
-        </v-row>
-
-        <v-row>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
           <v-card>
             <v-tabs>
               <v-tab>
@@ -19,7 +20,7 @@
                 Admin
               </v-tab>
               <v-tab>
-                 <v-icon>
+                <v-icon>
                   mdi-pencil
                 </v-icon>
                 Editores
@@ -35,8 +36,8 @@
               </v-tab-item>
             </v-tabs>
           </v-card>
-        </v-row>
-      </v-col>
+        </v-col>
+      </v-row>
     </v-container>
   </v-app>
 </template>
@@ -52,7 +53,7 @@ export default {
     CreateUser,
     DatatableUsers,
     DatatableAdmins,
-    DatatableEditors
+    DatatableEditors,
   },
 };
 </script>

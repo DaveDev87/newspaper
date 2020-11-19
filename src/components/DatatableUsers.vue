@@ -81,7 +81,7 @@
                       Deshabilitar
                     </v-btn>
                     <v-btn
-                    v-if="editedItem.UserStatus==='UNCONFIRMED'"
+                      v-if="editedItem.UserStatus === 'UNCONFIRMED'"
                       outlined
                       color="green"
                       v-on:click="confirmUserSignUp(editedItem.Username)"
@@ -191,9 +191,7 @@ export default {
 
   methods: {
     async fetchUsers() {
-      let apiName = "AdminQueries";
-      let path = "/listUsers";
-      let myInit = {
+      let init = {
         headers: {
           "Content-Type": "application/json",
           Authorization: `${(await Auth.currentSession())
@@ -202,7 +200,7 @@ export default {
         },
       };
       try {
-        const { Users } = await API.get(apiName, path, myInit);
+        const { Users } = await API.get("AdminQueries", "/listUsers", init);
         this.userlist = Users.map((item) => ({
           Username: item.Username,
           UserStatus: item.UserStatus,
@@ -218,9 +216,7 @@ export default {
       }
     },
     async enableUser(name) {
-      let apiName = "AdminQueries";
-      let path = "/enableUser";
-      let myInit = {
+      let init = {
         body: {
           username: name,
         },
@@ -232,16 +228,14 @@ export default {
         },
       };
       try {
-        await API.post(apiName, path, myInit);
+        await API.post("AdminQueries", "/enableUser", init);
         this.fetchUsers();
       } catch (error) {
         console.error("Error fetching users: ", error);
       }
     },
     async disableUser(name) {
-      let apiName = "AdminQueries";
-      let path = "/disableUser";
-      let myInit = {
+      let init = {
         body: {
           username: name,
         },
@@ -253,7 +247,7 @@ export default {
         },
       };
       try {
-        await API.post(apiName, path, myInit);
+        await API.post("AdminQueries", "/disableUser", init);
         this.fetchUsers();
       } catch (error) {
         console.error("Error fetching users: ", error);

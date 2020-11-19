@@ -1,8 +1,8 @@
 <template>
-  <v-row justify="center">
+  <v-row class="d-flex flex-row-reverse">
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="primary" dark v-bind="attrs" v-on="on">
+        <v-btn  color="primary" dark v-bind="attrs" v-on="on">
           Crear Usuario
         </v-btn>
       </template>
@@ -65,14 +65,6 @@
           >
             Confirmar
           </v-btn>
-          <v-btn
-            color="green darken-1"
-            text
-            @click="dialog = false"
-            v-on:click="TestAPI()"
-          >
-            TEST
-          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -118,10 +110,6 @@ export default {
         console.error("Error signing up: ", error);
       }
     },
-
-    // TestAPI: async function() {
-    //   return await API.post(apiName, path, myInit);
-    // },
     cleanDialog: function() {
       this.username = "";
       this.email = "";
