@@ -80,6 +80,14 @@
                     >
                       Deshabilitar
                     </v-btn>
+                    <v-btn
+                    v-if="editedItem.UserStatus==='UNCONFIRMED'"
+                      outlined
+                      color="green"
+                      v-on:click="confirmUserSignUp(editedItem.Username)"
+                    >
+                      Confirmar cuenta
+                    </v-btn>
                   </v-col>
                 </v-row>
               </v-container>
@@ -209,7 +217,6 @@ export default {
         console.error("Error fetching users: ", error);
       }
     },
-
     async enableUser(name) {
       let apiName = "AdminQueries";
       let path = "/enableUser";
@@ -250,6 +257,25 @@ export default {
         this.fetchUsers();
       } catch (error) {
         console.error("Error fetching users: ", error);
+      }
+    },
+    async confirmUserSignUp(name) {
+      let init = {
+        body: {
+          username: name,
+        },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${(await Auth.currentSession())
+            .getAccessToken()
+            .getJwtToken()}`,
+        },
+      };
+      try {
+        await API.post("AdminQueries", "/confirmUserSignUp", init);
+        this.fetchUsers();
+      } catch (error) {
+        console.error("Error confirming user account: ", error);
       }
     },
 
