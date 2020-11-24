@@ -4,10 +4,11 @@
         <v-divider></v-divider>
         <v-card flat class="pa-3" v-for="todo in todos" :key="todo.newID">
             <v-layout row wrap>
-                <v-flex xs12 md5>
+                <v-flex xs12 md3>
                     <div class="caption grey--text">Titulo</div>
                     <div>{{todo.news_title}}</div>
                 </v-flex>
+                
                 <v-flex xs6 sm4 md2>
                     <div class="caption grey--text">Autor</div>
                     <div>{{todo.news_author}}</div>
@@ -22,11 +23,13 @@
                     justify="space-around">
 
                    <Popup
-                   v-bind:key="todo.newID" 
+                   v-bind:todo="todo"
                    />
                     <v-btn
                     depressed
-                    color="error">
+                    color="error"
+                    @click="deleted(todo.newID)"
+                    >
                     Eliminar
                     </v-btn>
                   </v-row>
@@ -86,10 +89,12 @@ import Popup from '../components/Popup.vue'
 import axios from 'axios'
 
 
+
 export default {
   components: { Popup },
     data () {
       return {
+       
         items: [
           { title: 'Crear Noticia', icon: 'mdi-file-plus', route: '/CreateNew' },
           { title: 'Modificar Noticias', icon: 'mdi-file-edit', route: '/ModifyNews' },
@@ -113,7 +118,28 @@ export default {
             this.todos= response.data.Items
           })
           .catch(e=> console.log(e))
-      }
+      },
+       deleted(deletedID){
+         console.log(deletedID)
+        axios.delete(`https://xrh6ds3ujf.execute-api.us-east-2.amazonaws.com/default/eliminar_noticia?id=${deletedID}`, 
+          {
+            headers: {
+              "x-api-key": "IlFzPiYcXm7SauQWkhZWk3VuI4d89oP34c9W7Bun",
+              "Access-Control-Allow-Origin": "*",
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            }
+          }
+        )
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((e) => console.log(e.message));
+
+        this.getTodos();
+        // this.methodThatForcesUpdate();
+      },
+      
     },
   }
 </script>

@@ -1,5 +1,41 @@
 <template>
+<div>
+  <div class= "pa-13">
+<h1>Bienvenido al modo Editor</h1>
+<p>Elige que es lo que quieres hacer en el tablero derecho</p>
   
+  <div >
+    <v-alert
+      outlined
+      color="purple"
+    >
+      <div class="title">
+        El Modo Editor te permitira:
+      </div>
+      <div class="pa-3">
+        <li>Crear Noticias Nuevas</li>
+        <li>Modificar Noticias Existentes</li>
+        <li>Eliminar noticias propias</li>
+      </div>
+
+    </v-alert>
+    <v-alert
+      outlined
+      type="success"
+      text
+    >
+      Puedes modificar, crear, eliminar y editar las veces que quieras.
+    </v-alert>
+    <v-alert
+      outlined
+      type="warning"
+      prominent
+      border="left"
+    >
+      Si haces mal uso del modo editor un administrador tomara cartas en el asunto, recuerda que tenemos registro de todo lo que modificas y todo lo que eliminas.
+    </v-alert>
+  </div>
+  </div>
     <v-navigation-drawer
       absolute
       permanent
@@ -35,7 +71,7 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-  
+  </div>
 
 </template>
 
