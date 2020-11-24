@@ -2,6 +2,7 @@
   <v-data-table
     :headers="headers"
     :items="userlist"
+    :search="search"
     sort-by="name"
     class="elevation-1"
     :loading="this.isLoading"
@@ -12,12 +13,20 @@
         <v-toolbar-title>Usuarios</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Buscar usuario"
+          single-line
+          hide-details
+        ></v-text-field>
         <v-dialog v-model="dialog" max-width="500px">
           <v-card>
             <v-card-text>
-              <v-container>
+              <v-container fluid>
                 <v-row>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col>
+                    <!--Information fields -->
                     <v-list-item>
                       <v-list-item-content>
                         <v-list-item-title>Nombre de usuario</v-list-item-title>
@@ -63,31 +72,42 @@
                       </v-list-item-content>
                     </v-list-item>
                   </v-col>
+                </v-row>
+                <v-row>
                   <v-col>
-                    <v-btn
-                      v-if="!editedItem.Enabled"
-                      v-on:click="enableUser(editedItem.Username)"
-                      outlined
-                      color="green"
-                    >
-                      Habilitar
-                    </v-btn>
-                    <v-btn
-                      v-else-if="editedItem.Enabled"
-                      v-on:click="disableUser(editedItem.Username)"
-                      outlined
-                      color="blue"
-                    >
-                      Deshabilitar
-                    </v-btn>
-                    <v-btn
-                      v-if="editedItem.UserStatus === 'UNCONFIRMED'"
-                      outlined
-                      color="green"
-                      v-on:click="confirmUserSignUp(editedItem.Username)"
-                    >
-                      Confirmar cuenta
-                    </v-btn>
+                    <!-- Action buttons -->
+                    <v-row>
+                      <v-col>
+                        <v-btn
+                          v-if="!editedItem.Enabled"
+                          v-on:click="enableUser(editedItem.Username)"
+                          outlined
+                          color="green"
+                        >
+                          Habilitar
+                        </v-btn>
+                        <v-btn
+                          v-else-if="editedItem.Enabled"
+                          v-on:click="disableUser(editedItem.Username)"
+                          outlined
+                          color="blue"
+                        >
+                          Deshabilitar
+                        </v-btn>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col>
+                        <v-btn
+                          v-if="editedItem.UserStatus === 'UNCONFIRMED'"
+                          outlined
+                          color="green"
+                          v-on:click="confirmUserSignUp(editedItem.Username)"
+                        >
+                          Confirmar cuenta
+                        </v-btn>
+                      </v-col>
+                    </v-row>
                   </v-col>
                 </v-row>
               </v-container>
@@ -104,23 +124,14 @@
         <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card>
             <v-card-title class="headline"
-              >Are you sure you want to delete this item?</v-card-title
+              >Aquí algún día habrá algo</v-card-title
             >
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete"
-                >Cancel</v-btn
-              >
-              <v-btn color="blue darken-1" text @click="deleteItemConfirm"
-                >OK</v-btn
-              >
-              <v-spacer></v-spacer>
-            </v-card-actions>
           </v-card>
         </v-dialog>
       </v-toolbar>
     </template>
     <template v-slot:item.actions="{ item }">
+      <!-- Extra information and news by user buttons -->
       <v-icon small class="mr-2" @click="editItem(item)">
         mdi-pencil
       </v-icon>
@@ -141,6 +152,7 @@ import { Auth, API } from "aws-amplify";
 import moment from "moment";
 export default {
   data: () => ({
+    search: "",
     isLoading: true,
     dialog: false,
     dialogDelete: false,

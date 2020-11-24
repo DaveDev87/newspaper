@@ -4,6 +4,9 @@
       <template v-slot:activator="{ on, attrs }">
         <v-btn  color="primary" dark v-bind="attrs" v-on="on">
           Crear Usuario
+          <v-icon>
+            mdi-plus
+          </v-icon>
         </v-btn>
       </template>
       <v-card>
