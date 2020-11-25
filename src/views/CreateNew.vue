@@ -3,7 +3,7 @@
    <h1>¡Crea tu Noticia!</h1>
      <v-card max-width="1000">
         <v-card-title>
-          <span class="headline">Editar Noticia</span>
+          
         </v-card-title>
         <v-card-text>
           <v-container>
@@ -88,7 +88,7 @@
           </v-list-item-avatar>
 
           <v-list-item-content>
-            <v-list-item-title>Jane Smith</v-list-item-title>
+            <v-list-item-title>{{author}}</v-list-item-title>
             <v-list-item-subtitle>Logged In</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
@@ -118,16 +118,18 @@
 <script>
 import axios from "axios";
 
+
 export default {
     data () {
       return {
+        
         alert: false,
         items: [
           { title: 'Crear Noticia', icon: 'mdi-file-plus', route: '/CreateNew' },
           { title: 'Modificar Noticias', icon: 'mdi-file-edit', route: '/ModifyNews' },
         ],
         title: '',
-        author:'Jaime Andres',
+        author:this.$store.state.user.username,
         body:'',
         image_url:'https://newspaper-images-bootcamp.s3.us-east-2.amazonaws.com/travisbatman.jpg',
         section:'Policiaca',
