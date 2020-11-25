@@ -6,8 +6,8 @@
       </div>
 
       <v-spacer></v-spacer>
-      <v-btn v-if="this.isLogged" text v-on:click="signOut()">
-        <span class="mr-2">Logout</span>
+      <v-btn v-if="this.$store.state.user.status" text v-on:click="signOut()">
+        <span class="mr-2">{{ this.$store.state.user.username }}</span>
         <v-icon>mdi-logout</v-icon>
       </v-btn>
     </v-app-bar>
@@ -23,34 +23,44 @@
 <script>
 import { Auth } from "aws-amplify";
 export default {
+  data: () => ({
+    userLog: true,
+  }),
   name: "App",
-  computed: {
-    isLogged() {
-      return this.$store.state.isLogged;
-    },
-  },
   methods: {
     signOut: async function() {
       try {
         await Auth.signOut({ global: true });
-        this.$store.commit("changeLoggedStatus", false);
+        this.$store.commit("setUser", {
+          username: "",
+          group: "",
+          status: false,
+        });
         this.$router.push("/");
       } catch (error) {
         console.log("error signing out: ", error);
       }
     },
-    checkStatus: async function() {
-      try {
-        await Auth.currentSession();
-        this.$store.commit("changeLoggedStatus", true);
-      } catch (error) {
-        this.$store.commit("changeLoggedStatus", false);
-      }
-    },
+    // userStatus: async function() {
+    //   try {
+    //     let datos = await Auth.currentSession();
+    //     let status = true;
+    //     let group = datos.accessToken.payload["cognito:groups"][0];
+    //     let username = datos.accessToken.payload["username"];
+    //     this.$store.commit("setUser", { username, group, status });
+    //     this.userLog = true;
+    //     if (group === "admin") {
+    //       this.$router.push("/admin");
+    //     } else if (group === "editores") {
+    //       this.$router.push("/editor");
+    //     }
+    //   } catch (error) {
+    //     console.log("Error handling user ", error);
+    //   }
+    // },
   },
-
-  updated() {
-    this.checkStatus();
+  created() {
+    // this.userStatus();
   },
 };
 </script>
