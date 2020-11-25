@@ -44,19 +44,36 @@ export default {
     signUp: async function() {
       try {
         await Auth.signIn(this.username, this.password);
-        this.$router.push("/admin");
+        await this.userStatus();
       } catch (error) {
         console.log("error signin in ", error);
       }
     },
     test: async function() {
-     try {
-       let user = await Auth.currentAuthenticatedUser();
-       console.log(user)
-     } catch (error) {
-       console.log(error)
-     }
+      try {
+        let user = await Auth.currentAuthenticatedUser();
+        console.log(user);
+      } catch (error) {
+        console.log(error);
+      }
     },
+    userStatus: async function() {
+      try {
+        let datos = await Auth.currentSession();
+        let status = true;
+        let group = datos.accessToken.payload["cognito:groups"][0];
+        let username = datos.accessToken.payload["username"];
+        this.$store.commit("setUser", { username, group, status });
+        group === "admin"
+          ? this.$router.push("/admin")
+          : this.$router.push("/editor");
+      } catch (error) {
+        console.log("Error handling user ", error);
+      }
+    },
+  },
+  created() {
+    this.userStatus();
   },
 };
 </script>
