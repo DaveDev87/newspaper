@@ -14,7 +14,8 @@
               >
                 <v-text-field
                   label="Titulo*"
-                  required
+                  v-model="title"
+                  :rules="[rules.required]"
                 ></v-text-field>
               </v-col>
               
@@ -23,15 +24,17 @@
                 <v-select
                   :items="['Policiaca', 'Estatal', 'Espectaculos', 'Nacional','Internacional','Deportes']"
                   label="Sección*"
-                  required
+                  v-model="section"
+                  :rules="[rules.required]"
                 ></v-select>
               </v-col>
               <v-col cols="12">
                 <v-textarea
                     name="input-7-1"
-                    label="Cuerpo de la Noticia"
-                    value=""
+                    label="Cuerpo de la Noticia*"
+                    v-model="body"
                     hint="Escribe el cuerpo de la noticia"
+                    :rules="[rules.required]"
                 ></v-textarea>
               </v-col>
               <v-col
@@ -42,6 +45,7 @@
                     label="Imagen de la Nota"
                     filled
                     prepend-icon="mdi-camera"
+                    :rules="[rules.required]"
                 ></v-file-input>
               </v-col>
               
@@ -49,6 +53,26 @@
           </v-container>
           <small>*parametros obligatorios</small>
         </v-card-text>
+        <v-card-actions>
+        <v-spacer></v-spacer>
+        
+        <v-btn
+          color="blue darken-1"
+          text
+          @click="submit(), (alert = true)"
+          :disabled="!isDisableFixed()"
+        >
+          Create
+        </v-btn>
+      </v-card-actions>
+      <v-alert
+        :value="alert"
+        color="green"
+        dark
+        border="top"
+        icon="mdi-alert"
+        transition="scale-transition"
+        >Submited</v-alert>
         
       </v-card>
 
@@ -92,14 +116,73 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
     data () {
       return {
+        alert: false,
         items: [
           { title: 'Crear Noticia', icon: 'mdi-file-plus', route: '/CreateNew' },
           { title: 'Modificar Noticias', icon: 'mdi-file-edit', route: '/ModifyNews' },
         ],
+        title: '',
+        author:'Jaime Andres',
+        body:'',
+        image_url:'https://newspaper-images-bootcamp.s3.us-east-2.amazonaws.com/travisbatman.jpg',
+        section:'Policiaca',
+        rules: {
+      required: (value) => !!value || "Required.",
+    },
       }
+    },
+    methods: {
+      submit(){
+        // const params={
+        // title: this.title,
+        // author:this.author,
+        // body:this.body,
+        // image_url:this.image_url,
+        // section:this.section
+
+        // }
+        // console.log(this.title,this.author,this.body,this.image_url,this.section)
+        // console.log(params);
+        axios.post('https://b33k9jtxz5.execute-api.us-east-2.amazonaws.com/default/crear_noticia',
+                  null,
+                  { 
+                    params: {
+                      // author:this.author,
+                      // body:this.body,
+                      // image_url:this.image_url,
+                      // section:this.section,
+                      // title: this.title,
+
+                      author:this.author,
+                      body:this.body,
+                      image_url:this.image_url,
+                      section:this.section,
+                      title: this.title,
+
+                    },
+                    headers: { 'x-api-key': 'IlFzPiYcXm7SauQWkhZWk3VuI4d89oP34c9W7Bun',
+                    "Access-Control-Allow-Origin": "*",
+                     'Accept': 'application/json',
+                     'Content-Type': 'application/json'
+                    }
+                  }
+                )
+                .then(
+          response => {
+            console.log(response)
+            this.todos= response.data.Items
+          })
+          .catch(e=> console.log(e))
+
+      },
+      isDisableFixed() {
+      return this.title.length > 0 && this.body.length > 0;
+    },
     },
   }
 </script>
