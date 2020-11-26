@@ -21,7 +21,12 @@
         </v-text-field>
       </v-container>
       <v-card-actions>
-        <v-btn color="purple" text v-on:click="signUp()">
+        <v-btn
+          color="purple"
+          text
+          v-on:click="signIn()"
+          :loading="btnisLoading"
+        >
           ingresar
         </v-btn>
         <v-btn color="purple" text v-on:click="test()">
@@ -39,14 +44,18 @@ export default {
   data: () => ({
     username: "",
     password: "",
+    btnisLoading: false,
   }),
   methods: {
-    signUp: async function() {
+    signIn: async function() {
+      this.btnisLoading = true;
       try {
         await Auth.signIn(this.username, this.password);
         await this.userStatus();
+        this.btnisLoading = false;
       } catch (error) {
         console.log("error signin in ", error);
+        this.btnisLoading = false;
       }
     },
     test: async function() {
