@@ -57,7 +57,7 @@
           </v-list-item-avatar>
 
           <v-list-item-content>
-            <v-list-item-title>Jane Smith</v-list-item-title>
+            <v-list-item-title>{{author}}</v-list-item-title>
             <v-list-item-subtitle>Logged In</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
@@ -90,10 +90,13 @@ import axios from 'axios'
 
 
 
+
+
 export default {
   components: { Popup },
     data () {
       return {
+        author:this.$store.state.user.username,
        
         items: [
           { title: 'Crear Noticia', icon: 'mdi-file-plus', route: '/CreateNew' },
@@ -110,8 +113,13 @@ export default {
     },
     methods: {
       getTodos(){
-        axios.get('https://0zvnue8cok.execute-api.us-east-2.amazonaws.com/default/all_noticias',
-                  { 'headers': { 'x-api-key': 'IlFzPiYcXm7SauQWkhZWk3VuI4d89oP34c9W7Bun' }}
+        axios.get('https://glycqj1sod.execute-api.us-east-2.amazonaws.com/default/Noticia_author',
+                  { 
+                    params: {
+                            author: this.author
+                            }
+                    // 'headers': { 'x-api-key': 'IlFzPiYcXm7SauQWkhZWk3VuI4d89oP34c9W7Bun' }
+                    }
                 ).then(
           response => {
             console.log(response)
