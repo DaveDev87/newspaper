@@ -12,6 +12,9 @@
       <v-toolbar flat>
         <v-toolbar-title>Usuarios</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
+        <v-btn icon color="blue" v-on:click="fetchUsers()">
+          <v-icon>mdi-cached</v-icon>
+        </v-btn>
         <v-spacer></v-spacer>
         <v-text-field
           v-model="search"
