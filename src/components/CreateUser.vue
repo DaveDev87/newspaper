@@ -2,7 +2,7 @@
   <v-row class="d-flex flex-row-reverse">
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn  color="primary" dark v-bind="attrs" v-on="on">
+        <v-btn color="primary" rounded dark v-bind="attrs" v-on="on">
           Crear Usuario
           <v-icon>
             mdi-plus
@@ -53,18 +53,16 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
-            color="blue darken-1"
+            color="red darken-1"
             text
-            @click="dialog = false"
-            v-on:click="cleanDialog()"
+            v-on:click="cleanDialog(), (dialog = false)"
           >
             Cancelar
           </v-btn>
           <v-btn
             color="blue darken-1"
             text
-            @click="dialog = false"
-            v-on:click="createUser()"
+            v-on:click="createUser(), (dialog = false)"
           >
             Confirmar
           </v-btn>
@@ -86,9 +84,7 @@ export default {
   }),
   methods: {
     createUser: async function() {
-      let apiName = "AdminQueries";
-      let path = "/addUserToGroup";
-      let myInit = {
+      let init = {
         body: {
           username: this.username,
           groupname: this.rol,
@@ -108,7 +104,7 @@ export default {
             email: this.email,
           },
         });
-        await API.post(apiName, path, myInit);
+        await API.post("AdminQueries", "/addUserToGroup", init);
       } catch (error) {
         console.error("Error signing up: ", error);
       }

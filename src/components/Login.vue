@@ -29,9 +29,9 @@
         >
           ingresar
         </v-btn>
-        <v-btn color="purple" text v-on:click="test()">
-          test
-        </v-btn>
+        <v-snackbar v-model="thereIsAnError">
+          {{ errorSigningIn }}
+        </v-snackbar>
       </v-card-actions>
     </v-form>
   </v-card>
@@ -45,6 +45,8 @@ export default {
     username: "",
     password: "",
     btnisLoading: false,
+    thereIsAnError: false,
+    errorSigningIn: "",
   }),
   methods: {
     signIn: async function() {
@@ -55,15 +57,9 @@ export default {
         this.btnisLoading = false;
       } catch (error) {
         console.log("error signin in ", error);
+        this.errorSigningIn = error.message;
+        this.thereIsAnError = true;
         this.btnisLoading = false;
-      }
-    },
-    test: async function() {
-      try {
-        let user = await Auth.currentAuthenticatedUser();
-        console.log(user);
-      } catch (error) {
-        console.log(error);
       }
     },
     userStatus: async function() {
@@ -86,5 +82,3 @@ export default {
   },
 };
 </script>
-
-<style></style>
