@@ -1,8 +1,9 @@
 <template>
     <div class="modifynews">
         <h1>Tus Noticias</h1>
+        <v-btn color="success" class="ma-2" @click="refresh()"> Actualizar </v-btn>
         <v-divider></v-divider>
-        <v-card flat class="pa-3" v-for="todo in todos" :key="todo.newID">
+        <v-card flat class="pa-3" v-for="todo in todos" v-bind:key="todo.newID">
             <v-layout row wrap>
                 <v-flex xs12 md3>
                     <div class="caption grey--text">Titulo</div>
@@ -25,13 +26,13 @@
                    <Popup
                    v-bind:todo="todo"
                    />
-                    <v-btn
+                    <!-- <v-btn
                     depressed
                     color="error"
                     @click="deleted(todo.newID)"
                     >
                     Eliminar
-                    </v-btn>
+                    </v-btn> -->
                   </v-row>
                         
                     
@@ -102,7 +103,8 @@ export default {
           { title: 'Crear Noticia', icon: 'mdi-file-plus', route: '/CreateNew' },
           { title: 'Modificar Noticias', icon: 'mdi-file-edit', route: '/ModifyNews' },
         ],
-        todos: []
+        todos: [],
+        componentKey:0,
         
 
       }
@@ -112,6 +114,30 @@ export default {
       
     },
     methods: {
+      refresh(){
+        axios.get('https://glycqj1sod.execute-api.us-east-2.amazonaws.com/default/Noticia_author',
+                  { 
+                    params: {
+                            author: this.author
+                            }
+                    // 'headers': { 'x-api-key': 'IlFzPiYcXm7SauQWkhZWk3VuI4d89oP34c9W7Bun' }
+                    }
+                ).then(
+          response => {
+            console.log(response)
+            this.todos= response.data.Items
+            for (let index = 0; index < this.todos.length; index++) {
+                console.log(this.todos.[index].newID)
+                this.todos.[index].newID= index
+                console.log(this.todos.[index].newID)
+            }
+
+          })
+          .catch(e=> console.log(e))
+        
+        
+          
+      },
       getTodos(){
         axios.get('https://glycqj1sod.execute-api.us-east-2.amazonaws.com/default/Noticia_author',
                   { 
