@@ -47,7 +47,7 @@ export default {
         let status = true;
         let group = datos.accessToken.payload["cognito:groups"][0];
         let username = datos.accessToken.payload["username"];
-        this.$store.commit("setUser", { username, group, status });
+        this.$store.commit("setUser", { username, group, status }); // Save user data into Vuex
         group === "admin"
           ? this.$router.push("/admin")
           : this.$router.push("/editor");
