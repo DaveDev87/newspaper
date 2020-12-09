@@ -3,8 +3,8 @@
         <h1>Tus Noticias</h1>
         <v-btn color="success" class="ma-2" @click="refresh()"> Actualizar </v-btn>
         <v-divider></v-divider>
-        <v-card flat class="pa-3" v-for="todo in todos" v-bind:key="todo.newID">
-            <v-layout row wrap>
+        <v-card flat class="pa-3"  v-for="todo in todos" v-bind:key="todo.newID" >
+            <v-layout row wrap >
                 <v-flex xs12 md3>
                     <div class="caption grey--text">Titulo</div>
                     <div>{{todo.news_title}}</div>
@@ -86,8 +86,12 @@
 </template>
 
 <script>
+// import Vue from "vue";
+
 import Popup from '../components/Popup.vue'
 import axios from 'axios'
+// import Vue from 'vue';
+//  Vue.forceUpdate();
 
 
 
@@ -104,7 +108,7 @@ export default {
           { title: 'Modificar Noticias', icon: 'mdi-file-edit', route: '/ModifyNews' },
         ],
         todos: [],
-        componentKey:0,
+        componentKey:1,
         
 
       }
@@ -126,11 +130,12 @@ export default {
           response => {
             console.log(response)
             this.todos= response.data.Items
-            for (let index = 0; index < this.todos.length; index++) {
-                console.log(this.todos.[index].newID)
-                this.todos.[index].newID= index
-                console.log(this.todos.[index].newID)
-            }
+            // for (let index = 0; index < this.todos.length; index++) {
+            //     console.log(this.todos.[index].newID)
+            //     this.todos.[index].newID= index
+            //     console.log(this.todos.[index].newID)
+            // }
+            //  this.$forceUpdate();
 
           })
           .catch(e=> console.log(e))
