@@ -55,11 +55,6 @@ export default {
     DatatableAdmins,
     DatatableEditors,
   },
-  // methods:{
-  // trigger() {
-  //   alert("imon")
-  // }
-  // }
 };
 </script>
 

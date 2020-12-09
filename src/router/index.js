@@ -4,8 +4,8 @@ import Home from "../views/Home.vue";
 import Admin from "../views/Admin.vue";
 import Editor from "../views/Editor.vue";
 import CreateNew from "../views/CreateNew.vue";
-import ModifyNews from "../views/ModifyNews.vue"
-
+import ModifyNews from "../views/ModifyNews.vue";
+import Newstable from "../views/Newstable.vue";
 
 Vue.use(VueRouter);
 
@@ -24,6 +24,10 @@ const routes = [
     path: "/editor",
     name: "editor",
     component: Editor,
+  },
+  {
+    path: "/news/:username",
+    component: Newstable,
   },
   {
     path: "/CreateNew",
